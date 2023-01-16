@@ -57,6 +57,7 @@ async function listOfAllPrice() {
     console.log("USDMYR:".padEnd(30, ' ') + `${exchangeRate}`)
     console.log("BTCBUSD price on Binance:".padEnd(30, ' ') + `USD ${btcBinancePrice}`)
     console.log("BTCUSD price on LUNO:".padEnd(30, ' ') + `USD ${usdToMyr}`)
+    console.log("Price Difference".padEnd(30, ' ') + `USD${priceDiffBtc}`)
     console.log("LUNO Premium:".padEnd(30, ' ') + `${Math.round(premiumDiff * 10000) / 10000}%`)
 }
 
