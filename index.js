@@ -1,32 +1,32 @@
-//require("dotenv").config()
-const dotenv = require('dotenv')
+import dotenv from "dotenv"
 dotenv.config()
-const Binance = require('node-binance-api');
+import Binance from "node-binance-api"
 
 async function lunoPrice() {
-    const res = await fetch("https://api.luno.com/api/1/tickers")
-    const ok = await res.json()
-    const lunoData = ok.tickers
-
-    for (let i = 0; i < lunoData.length; i++) {
-        if (lunoData[i].pair === 'XBTMYR') {
-            return Math.round(lunoData[i].last_trade * 100) / 100
-        } else {
-            continue
-        }
-    }
+    const res = await fetch("https://api.luno.com/api/1/orderbook_top?pair=XBTMYR")
+    const result = await res.json()
+    return +result.asks[0].price
 }
 
 async function forexCurrency() {
-    const myHeaders = new Headers()
-    myHeaders.append("apikey", process.env.API_KEY)
-    return new Promise((resolve, reject) => {
-        fetch("https://api.apilayer.com/fixer/latest?symbols=MYR&base=USD", {
-            method: 'GET',
-            headers: myHeaders
-        }).then(response => response.json())
-            .then(data => resolve(data.rates['MYR']))
+    const res = await fetch("https://api.apilayer.com/fixer/latest?symbols=MYR&base=USD", {
+        method: 'GET',
+        redirect: 'follow',
+        headers:{
+            'apiKey': process.env.API_KEY
+        }
     })
+    const data = await res.json()
+    return data.rates['MYR']
+    // const myHeaders = new Headers()
+    // myHeaders.append("apikey", process.env.API_KEY)
+    // return new Promise((resolve, reject) => {
+    //     fetch("https://api.apilayer.com/fixer/latest?symbols=MYR&base=USD", {
+    //         method: 'GET',
+    //         headers: myHeaders
+    //     }).then(response => response.json())
+    //         .then(data => resolve(data.rates['MYR']))
+    // })
 }
 
 async function binanceCoin() {
